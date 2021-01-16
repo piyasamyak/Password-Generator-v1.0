@@ -2,7 +2,7 @@
 This program generates a unique password based on user preferences and also provides the number of each type of character that was used in the password.
 
 ## Getting Started
-Open the downloaded folder in the terminal and run the following command:
+Change directory in the terminal to the downloaded file and run the following command:
 
 `python main.py`
 
