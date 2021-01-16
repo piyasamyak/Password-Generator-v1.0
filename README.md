@@ -3,7 +3,7 @@ This program generate a unique password based on user preferences and also provi
 
 ## Getting Started
 Open the downloaded folder in the terminal and run the following command:
-'python main.py'
+`python main.py`
 
 ## What I Learned
 * Importing modules 
