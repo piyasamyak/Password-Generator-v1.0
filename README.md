@@ -1,16 +1,18 @@
-# Password Generator v1.0
-This program generates a unique password based on user preferences and also provides the number of each type of character that was used in the password.
+# Password Manager v1.0
+This program generates a strong unique password and saves it to a text file for future reference
+
+![Password Manager App](https://github.com/piyasamyak/Password-Generator-v1.0/blob/main/App.png)
 
 ## Getting Started
-Change directory in the terminal to the downloaded file and run the following command:
+Open terminal, change directory to the downloaded folder and run the following command:
 
 `python3 main.py`
 
 ## What I Learned
-* Importing modules 
-* Looping through a list 
-* Nesting a list within another list
-* Using f-Strings
-* Executing a program until the user wants to terminate
+* Building a Password Manager GUI App with Tkinter
+* Writing Tkinter data into to a text file
+* Generating strong unique sequences of passwords
+* Using list comprehension to make shorter readable codes
+* Dynamic typing and using the pyperclip library
 
 
