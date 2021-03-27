@@ -1,76 +1,153 @@
-import random
-import logos
-from password_characters import alphabets, symbols, numbers
+from tkinter import *
+from tkinter import messagebox
+from random import randint, choice, shuffle
+import pyperclip
 
-print(logos.logo)
-print("Welcome to the Password Generator v1.0 by Samyak Piya (SaPi)!\n")
+# ----------------------
+# ------ PASSWORD GENERATOR ------------------------------- #
+# Password Generator Project]
+def generate_password():
+    letters = [
+        "a",
+        "b",
+        "c",
+        "d",
+        "e",
+        "f",
+        "g",
+        "h",
+        "i",
+        "j",
+        "k",
+        "l",
+        "m",
+        "n",
+        "o",
+        "p",
+        "q",
+        "r",
+        "s",
+        "t",
+        "u",
+        "v",
+        "w",
+        "x",
+        "y",
+        "z",
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I",
+        "J",
+        "K",
+        "L",
+        "M",
+        "N",
+        "O",
+        "P",
+        "Q",
+        "R",
+        "S",
+        "T",
+        "U",
+        "V",
+        "W",
+        "X",
+        "Y",
+        "Z",
+    ]
+    numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+    symbols = ["!", "#", "$", "%", "&", "(", ")", "*", "+"]
 
-# Generates given number of characters for each string type
-def generate_password_string(num_of_type, type_of_char):
-    password_of_type = ""
-    for i in range(num_of_type):
-        password_of_type += random.choice(type_of_char)
-    return password_of_type
+    password_letters = [choice(letters) for _ in range(randint(8, 10))]
+    password_symbols = [choice(symbols) for _ in range(randint(2, 4))]
+    password_numbers = [choice(numbers) for _ in range(randint(2, 4))]
+    password_list = password_letters + password_symbols + password_numbers
+
+    shuffle(password_list)
+    password = "".join(password_list)
+
+    entry_password.delete(0, END)
+    entry_password.insert(0, password)
+    pyperclip.copy(password)
 
 
-# Generates a new password by randomizing the sequence of characters in the combined password
-def generate_password(combined_password_strings):
-    combined_password_strings_list = list(combined_password_strings)
-    randomized_password_list = random.sample(
-        combined_password_strings_list, len(combined_password_strings_list)
-    )
-    password = "".join(randomized_password_list)
-    return password
+# ---------------------------- SAVE PASSWORD ------------------------------- #
+def delete_entries():
+    entry_email.delete(0, END)
+    entry_website.delete(0, END)
+    entry_password.delete(0, END)
 
 
-num_of_alphabets, num_of_symbols, num_of_numbers = [], [], []
-num_of_chars = [num_of_alphabets, num_of_symbols, num_of_numbers]
-continueGenerating = True
-passwords = []
+def write_data():
+    website = entry_website.get()
+    email = entry_email.get()
+    password = entry_password.get()
 
-while continueGenerating:
-    num_alphabets = int(input("How many alphabets do you want in your password?\n-> "))
-    num_symbols = int(input("\nHow many symbols do you want in your password?\n-> "))
-    num_numbers = int(input("\nHow many numbers do you want in your password?\n-> "))
-    print()
-
-    num_of_alphabets.append(num_alphabets)
-    num_of_symbols.append(num_symbols)
-    num_of_numbers.append(num_numbers)
-
-    # Combining different characters types into one string
-    combined_password = (
-        generate_password_string(num_alphabets, alphabets)
-        + generate_password_string(num_symbols, symbols)
-        + generate_password_string(num_numbers, numbers)
-    )
-
-    # Randomizes the seuqence of the characters in the combined password
-    password = generate_password(combined_password)
-
-    create_another = input(
-        f"The unique password you generated is as follows: {password}\nIt is {len(password)} characters long. Do you want to generate another password? Type 'yes' or 'no':\nNote: The password(s) you created so far will be saved and accessible at the end.\n-> "
-    ).lower()
-
-    while create_another != "yes" and create_another != "no":
-        create_another = input(
-            "\n---Invalid input. Please enter 'yes' to generate another password or 'no' to stop.---\n-> "
+    if len(website) == 0 or len(email) == 0 or len(password) == 0:
+        messagebox.showinfo(
+            title="Oops", message="Please don't leave any fields empty!"
         )
+    else:
+        dataset = website + " | " + email + " | " + password + "\n"
+        is_ok = messagebox.askokcancel(
+            title=website,
+            message=f"These are the details entered: \nEmail: {email} \nPassword: {password} "
+            f"\nIs it ok to save?",
+        )
+        if is_ok:
+            with open("logs.txt", "a") as file:
+                file.writelines(dataset)
+            delete_entries()
 
-    if create_another == "no":
-        continueGenerating = False
-    elif create_another == "yes":
-        print()
 
-    # Adds password(s) the user created to a list
-    passwords.append(password)
+# ---------------------------- UI SETUP ------------------------------- #
+window = Tk()
+window.title("Password Manager")
+window.config(padx=50, pady=50)
 
+canvas = Canvas(width=200, height=200)
+logo = PhotoImage(file="logo.png")
+canvas.create_image(100, 100, image=logo)
+canvas.grid(row=0, column=0, columnspan=3)
 
-print(f"\n{logos.thanks}\n")
-print(
-    f"You have generated {len(passwords)} password(s) in total. You may store them somewhere safe. They are as follows:\n"
+# Labels
+label_website = Label(text="Website: ")
+label_website.grid(row=1, column=0, sticky=W)
+
+label_email = Label(text="Email/Username: ")
+label_email.grid(row=2, column=0, sticky=W)
+
+label_password = Label(text="Password: ")
+label_password.grid(row=3, column=0, sticky=W)
+
+label_info = Label(
+    text="[Note: Generating a password automatically copies it to your clipboard.]",
+    pady=20,
 )
-for each in range(len(passwords)):
-    print(
-        f"{each + 1}: {passwords[each]} ({len(passwords[each])} characters long: '{num_of_chars[0][each]}' alphabet(s), '{num_of_chars[1][each]}' symbol(s), and '{num_of_chars[0][each]}' number(s).)"
-    )
+label_info.grid(row=4, column=0, columnspan=3)
+
+# Entries
+entry_website = Entry(width=35)
+entry_website.focus()
+entry_website.grid(row=1, column=1, columnspan=2, sticky=W)
+
+entry_email = Entry(width=35)
+entry_email.grid(row=2, column=1, columnspan=2, sticky=W)
+
+entry_password = Entry(width=35)
+entry_password.grid(row=3, column=1, columnspan=2, sticky=W)
+
+# Buttons
+button_generate = Button(text="Generate Password", width=35, command=generate_password)
+button_generate.grid(row=5, column=0)
+
+button_add = Button(text="Save", width=35, command=write_data)
+button_add.grid(row=5, column=1)
+
+window.mainloop()
