@@ -10,9 +10,9 @@ Open terminal, change directory to the downloaded folder and run the following c
 
 ## What I Learned
 * Building a Password Manager GUI App with Tkinter
-* Writing Tkinter data into to a text file
+* Writing Tkinter data into a JSON file
 * Generating strong unique sequences of passwords
-* Using list comprehension to make shorter readable codes
+* Using list comprehension for shorter readable codes
 * Dynamic typing and using the pyperclip library
 
 
